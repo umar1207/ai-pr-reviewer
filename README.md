@@ -3,5 +3,7 @@
 #### Usage
 add the endpoint in your repo webhook
 ```bash
-https://host/api/v1/review/pr
+https://immortal-spaniel-unique.ngrok-free.app/api/v1/review/pr
+
+# server currently not running
 ```
