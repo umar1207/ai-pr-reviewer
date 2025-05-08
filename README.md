@@ -2,4 +2,6 @@
 
 #### Usage
 add the endpoint in your repo webhook
-
+```bash
+https://host/api/v1/review/pr
+```
