@@ -4,7 +4,7 @@ public class AppConstants {
     public static final String BASE_ENDPOINT = "/api/v1";
     public static final String REVIEW_ENDPOINT = "/review/pr";
     public static final String INITIAL_PROMPT = "You are a PR Code Reviewer. Respond with a JSON object like {\"filename\": \"review comment\"}. Here's the git diff:\n";
-    public static final String X_GITHUB_EVENT = "x-github_event";
+    public static final String X_GITHUB_EVENT = "x-github-event";
     public static final String PULL_REQUEST = "pull_request";
     public static final String OPENED = "opened";
     public static final String HEAD = "head";

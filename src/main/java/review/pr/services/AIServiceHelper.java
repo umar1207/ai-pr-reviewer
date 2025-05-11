@@ -38,6 +38,7 @@ public class AIServiceHelper {
 
     public String reviewPR(Map<String, Object> payload, Map<String, String> headers){
         String event = headers.get(X_GITHUB_EVENT);
+        System.out.println("EVENT: "+ event );
         if (PULL_REQUEST.equals(event)) {
             String action = (String) payload.get(ACTION);
 
