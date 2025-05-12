@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import review.pr.exception.general.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,20 +66,20 @@ public class AIServiceHelper {
                     return PR_OPENED_MESSAGE;
                 }
                 else {
-                    return FAILURE_MESSAGE;
+                    throw new MissingPullRequestDataException(FAILURE_MESSAGE);
                 }
             } else {
                 return PR_CLOSED_MESSAGE;
             }
         } else {
-            return UNKNOWN_EVENT;
+            throw new UnsupportedGitHubEventException(UNKNOWN_EVENT);
         }
     }
     private String fetchDiff(String diffUrl) {
         try {
             return restTemplate.getForObject(diffUrl, String.class);
         } catch (Exception e) {
-            return DIFF_FETCH_FAIL_MESSAGE + e.getMessage();
+            throw new DiffFetchException(DIFF_FETCH_FAIL_MESSAGE + e.getMessage());
         }
     }
 
@@ -95,8 +96,7 @@ public class AIServiceHelper {
                 reviews.put(fileName, jsonObject.getString(fileName));
             }
         } catch (Exception e) {
-            System.err.println(INVALID_JSON + reviewJson);
-            e.printStackTrace();
+            throw new InvalidReviewJsonException(INVALID_JSON + e.getMessage());
         }
         return reviews;
     }
