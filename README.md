@@ -1,4 +1,4 @@
-# 🤖 AI-Driven Code Review Tool for PR Merging
+# AI-Driven Code Review Tool for PR Merging
 Automatically reviews your pull requests using AI and helps maintain high code quality before merging.
 
 ---
