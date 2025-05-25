@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import review.pr.exception.general.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static review.pr.constants.AppConstants.*;
 
@@ -56,12 +55,17 @@ public class AIServiceHelper {
                     // Process the diff content for reviewing here...
                     String review = chat(diffContent);
 
+                    // Get the line number
+                    Map<String,Integer> commentPositions = computeCommentPositions(diffContent);
+
                     Map<String,String> reviews = parseReview(review);
                     for (Map.Entry<String, String> entry : reviews.entrySet()) {
                         String fileName = entry.getKey();
                         String comment = entry.getValue();
-
-                        postReviewComment(payload, comment, fileName);
+                        Integer position = commentPositions.get(fileName);
+                        if (position != null) {
+                            postReviewComment(payload, comment, fileName, position);
+                        }
                     }
                     return PR_OPENED_MESSAGE;
                 }
@@ -101,7 +105,53 @@ public class AIServiceHelper {
         return reviews;
     }
 
-    private void postReviewComment(Map<String,Object> payload, String review, String filepath){
+    private Map<String, Integer> computeCommentPositions(String rawDiff) {
+        Map<String, Integer> fileToPosition = new LinkedHashMap<>();
+
+        List<String> diffLines = Arrays.asList(rawDiff.split("\n"));
+        String currentFile = null;
+        boolean inHunk = false;
+        int position = 0;
+        boolean found = false;
+
+        for (String line : diffLines) {
+            // New file diff starts
+            if (line.startsWith("diff --git")) {
+                inHunk = false;
+                found = false;
+                position = 0;
+                currentFile = null;
+            }
+
+            // Extract filename from '+++ b/filename'
+            if (line.startsWith("+++ b/")) {
+                currentFile = line.substring(6); // remove '+++ b/'
+            }
+
+            // Start of a hunk
+            if (line.startsWith("@@") && !found) {
+                inHunk = true;
+                position = 0;
+                continue;
+            }
+
+            // Inside hunk: count lines until first '+' or '-' to find position
+            if (inHunk && !found) {
+                position++;
+
+                if (line.startsWith("+") || line.startsWith("-")) {
+                    fileToPosition.put(currentFile, position);
+                    found = true;
+                    inHunk = false;
+                }
+            }
+        }
+
+        return fileToPosition;
+    }
+
+
+    private void postReviewComment(Map<String,Object> payload, String review, String filepath, Integer position){
         Map<String, Object> pullRequest = (Map<String, Object>) payload.get(PULL_REQUEST);
         Map<String, Object> head = (Map<String, Object>) pullRequest.get(HEAD);
         String commitId = (String) head.get(SHA);
@@ -118,7 +168,7 @@ public class AIServiceHelper {
                 BODY, review,
                 COMMIT_ID, commitId,
                 PATH, filepath,
-                POSITION, 1
+                POSITION, position
         );
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(commentBody, headers);
