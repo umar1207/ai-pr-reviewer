@@ -12,4 +12,7 @@ Automatically reviews your pull requests using AI and helps maintain high code q
 4. Choose **Let me select individual events**, and select only: `pull_request`
 5. Click **Add Webhook**
 
+### Future scope
+1. Implement RAG pipeline
+2. Integrate an MCP server
 ---
