@@ -13,5 +13,3 @@ Automatically reviews your pull requests using AI and helps maintain high code q
 5. Click **Add Webhook**
 
 ---
-
-> ⚠️ Make sure your server is running at the above URL before triggering pull request events.
