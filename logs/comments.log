@@ -1,0 +1,16 @@
+[2026-01-27T01:13:41.641711] Comment for: src/main.java | Position: 5 | Commit: abc123
+Review: This is a review comment
+URL: https://api.github.com/repos/test/test/pulls/1/comments
+================================================================================
+[2026-01-27T01:13:41.651472] Comment for: src/main.java | Position: 5 | Commit: abc123
+Review: This is a review comment
+URL: https://api.github.com/repos/test/test/pulls/1/comments
+================================================================================
+[2026-01-27T01:17:10.901091] Comment for: hello.cpp | Position: 4 | Commit: 61d2841bfa3e883963c6e1b06956048fe1000734
+Review: Consider adding a comment above the second loop to explain why we are doubling the values in the array. Also, it's a good practice to avoid using single-letter variable names. Consider changing 'x' to a more descriptive name.
+URL: https://api.github.com/repos/umar1207/ai-code-reviewer-demo/pulls/10/comments
+================================================================================
+[2026-01-27T01:17:11.736198] Comment for: hello.py | Position: 1 | Commit: 61d2841bfa3e883963c6e1b06956048fe1000734
+Review: This is a new file and the code looks good. Just make sure to add a docstring at the top of the file explaining what the file is for.
+URL: https://api.github.com/repos/umar1207/ai-code-reviewer-demo/pulls/10/comments
+================================================================================
